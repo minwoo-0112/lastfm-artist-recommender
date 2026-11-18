@@ -1,0 +1,44 @@
+{
+  "dataset": "HetRec 2011 Last.fm 2K",
+  "input": "C:\\Users\\Kangho\\PythonProject\\hetrec2011-lastfm-2k.zip",
+  "audit": {
+    "raw_listening_rows": 92834,
+    "raw_tag_assignment_rows": 186479,
+    "unknown_tagging_artist_rows": 1538,
+    "duplicate_normalized_tag_assignments": 2
+  },
+  "clean_listening_rows": 92834,
+  "catalog_artists": 17632,
+  "artists_without_tags": 5499,
+  "content_eligible_artists": 10425,
+  "min_tags": 2,
+  "tag_vocabulary_size": 9583,
+  "tag_encoding": "latin-1",
+  "tfidf_policy": "raw distinct-tagger TF * smoothed IDF; L2 normalization; eligible artists are documents",
+  "metadata_policy": "Static aggregated catalog tags from all supplied tag assignments; no per-user tagging features. Not a temporal or strict user-independent metadata evaluation.",
+  "split": {
+    "users_before_history_filter": 1892,
+    "eligible_users": 1877,
+    "excluded_short_history_users": 15,
+    "excluded_short_history_rows": 33,
+    "artist_vocabulary_size": 17632,
+    "matrix_shape": [
+      1877,
+      17632
+    ],
+    "split_rows": {
+      "train": 55721,
+      "validation": 18540,
+      "test": 18540
+    },
+    "heldout_rows_without_train_artist": {
+      "validation": 2655,
+      "test": 2675
+    },
+    "min_history": 5,
+    "seed": 42,
+    "validation_fraction": 0.2,
+    "test_fraction": 0.2,
+    "split_policy": "per-user random artist holdout; floor with minimum 1 per heldout split"
+  }
+}
