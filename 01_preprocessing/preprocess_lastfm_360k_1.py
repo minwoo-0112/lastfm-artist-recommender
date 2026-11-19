@@ -1,4 +1,4 @@
-# B 데이터 전처리: 전달용 CSV와 처리 통계만 저장한다.
+# Dataset B preprocessing: save only the CSVs to hand over and processing statistics.
 import argparse
 import collections
 import csv
@@ -10,11 +10,11 @@ import random
 import re
 import unicodedata
 
-# 이름과 태그의 대소문자, 공백을 통일
+# Unify case and whitespace of names and tags
 def normalize(value):
     return ' '.join(unicodedata.normalize('NFKC', value).casefold().split())
 
-# 한글이 깨지지 않도록 CSV로 저장
+# Save as CSV (UTF-8 BOM so that non-ASCII text is not garbled)
 def write_csv(path, columns, rows):
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -23,12 +23,12 @@ def write_csv(path, columns, rows):
         writer.writerow(columns)
         writer.writerows(rows)
 
-# 보고서용
+# For the report
 def write_json(path, value):
     Path(path).write_text(json.dumps(value, ensure_ascii=False, indent=2), encoding='utf-8')
 
 
-# 빈 폴더인지 확인
+# Check that the folder is empty
 def prepare_output(path):
     path = Path(path)
     if path.exists() and any(path.iterdir()):
@@ -36,7 +36,7 @@ def prepare_output(path):
     path.mkdir(parents=True, exist_ok=True)
     return path
 
-# 같은 사용자의 이력을 학습, 검증, 테스트
+# Split the same user’s history into train, validation, and test
 def export_interactions(rows, output, *, seed, min_history,
                         val_fraction, test_fraction, artist_order=None):
     if min_history < 3 or not (0 < val_fraction < 1 and 0 < test_fraction < 1
@@ -63,12 +63,12 @@ def export_interactions(rows, output, *, seed, min_history,
     parts = {'train': [], 'validation': [], 'test': []}
     for user in eligible:
         history = sorted(histories[user])
-        # 사용자별로 같은 시드를 써서 다시 실행해도 같은 분할이 나오게 한다
+        # Use the same seed per user so a rerun gives the same split
         digest = hashlib.sha256((str(seed) + '|' + user).encode('utf-8')).digest()
         rng = random.Random(int.from_bytes(digest[:8], 'big'))
         rng.shuffle(history)
         n = len(history)
-        # 검증과 테스트에는 최소 한 개씩
+        # At least one item each for validation and test
         ntest = max(1, int(n * test_fraction))
         nval = max(1, int(n * val_fraction))
         if ntest + nval >= n:
@@ -98,14 +98,14 @@ def export_interactions(rows, output, *, seed, min_history,
             'validation_fraction': val_fraction, 'test_fraction': test_fraction,
             'split_policy': 'per-user random artist holdout; floor with minimum 1 per heldout split'}
 
-# 두 데이터에 같은 분할 기준을 사용
+# Use the same split criteria for both datasets
 def split_options(parser):
     parser.add_argument('--seed', type=int, default=42)
     parser.add_argument('--min-history', type=int, default=5)
     parser.add_argument('--val-fraction', type=float, default=0.2)
     parser.add_argument('--test-fraction', type=float, default=0.2)
 
-# 입력한 분할 설정을 함수로
+# Convert the given split settings into function arguments
 def split_kwargs(args):
     return dict(seed=args.seed, min_history=args.min_history,
                 val_fraction=args.val_fraction, test_fraction=args.test_fraction)
@@ -116,12 +116,12 @@ UID = re.compile(rb'[0-9a-fA-F]{40}')
 MBID = re.compile(r'[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}')
 ZERO_MBID = '00000000-0000-0000-0000-000000000000'
 
-# 아티스트 ID가 올바른 형식인지 확인
+# Check that the artist ID has a valid format
 def mbid_or_empty(value):
     value = value.strip().lower()
     return value if MBID.fullmatch(value) and value != ZERO_MBID else ''
 
-# 압축파일을 한 줄씩 읽기
+# Read the compressed file line by line
 def listening_lines(path):
     with tarfile.open(path, 'r|gz') as tar:
         found = False
@@ -135,7 +135,7 @@ def listening_lines(path):
         if not found:
             raise ValueError('Listening TSV not found')
 
-# B의 한 줄에서 ID, 이름, 재생 횟수를 검사
+# Check the ID, name, and play count in one line of B
 def parse_line(raw):
     try:
         parts = raw.decode('utf-8').rstrip('\r\n').split('\t')
@@ -156,20 +156,20 @@ def parse_line(raw):
             raise ValueError()
     except ValueError:
         return None, 'invalid_or_nonpositive_plays'
-    # MBID가 없거나 잘못됐으면 이름으로 임시 키를 만든다
+    # If the MBID is missing or malformed, make a temporary key from the name
     mid = mbid_or_empty(raw_mid)
     normalized = normalize(name)
     key = 'mbid:' + mid if mid else 'name:' + normalized
     return (uid, key, name, normalized, count, mid, raw_mid), None
 
 def main():
-    parser = argparse.ArgumentParser(description='Last.fm 360K 표본 추출과 전처리')
+    parser = argparse.ArgumentParser(description='Last.fm 360K sampling and preprocessing')
     parser.add_argument('--input', type=Path, required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--sample-users', type=int, default=10000,
-                        help='무작위로 선택할 사용자 수')
+                        help='number of users to select at random')
     parser.add_argument('--a-output', type=Path,
-                        help='A의 전처리 결과 폴더. 콘텐츠 외부 평가에 필요')
+                        help='output folder of A’s preprocessing; required for the content external evaluation')
     split_options(parser)
     args = parser.parse_args()
     if args.sample_users < 1:
@@ -185,7 +185,7 @@ def main():
     users = set()
     name_keys = collections.defaultdict(set)
     stats = collections.Counter()
-    print('1/2 전체 기록을 검사하고 사용자와 아티스트 이름을 확인합니다.', flush=True)
+    print('1/2 Checking all records and identifying users and artist names.', flush=True)
     for raw in listening_lines(args.input):
         stats['raw_rows'] += 1
         row, error = parse_line(raw)
@@ -205,11 +205,11 @@ def main():
             name_keys[normalized].add(key)
         if stats['raw_rows'] % 3000000 == 0:
             print('Scanned', stats['raw_rows'], 'rows', flush=True)
-    # 행이 아니라 사용자를 무작위로 뽑는다
+    # Draw users at random, not rows
     selected = set(random.Random(args.seed).sample(sorted(users), min(args.sample_users, len(users))))
     if not selected:
         raise ValueError('No valid users')
-    # 이름이 양쪽에서 하나의 아티스트에 대응하는 경우만 연결
+    # Link only when a name corresponds to exactly one artist on both sides
     proposed = collections.defaultdict(set)
     for name, keys in name_keys.items():
         if len(a_by_name[name]) == 1 and len(keys) == 1:
@@ -220,7 +220,7 @@ def main():
               ['b_artist_key', 'a_artist_id', 'a_name', 'a_content_eligible', 'status'],
               ((key, aid, a_lookup[aid]['name'], a_lookup[aid]['content_eligible'],
                 'conservative_name_candidate_not_identity_verified') for key, aid in sorted(b_to_a.items())))
-    print('2/2 선택한 사용자의 기록을 모으고 중복을 정리합니다.', flush=True)
+    print('2/2 Collecting the selected users’ records and cleaning duplicates.', flush=True)
     plays = {}
     artist_names = {}
     sample_stats = collections.Counter()
@@ -237,7 +237,7 @@ def main():
         pair = uid, key
         if pair in plays:
             sample_stats['duplicate_user_artist_rows'] += 1
-        # 같은 사용자와 아티스트가 반복되면 가장 큰 재생 횟수를 쓴다.
+        # If the same user and artist repeat, use the largest play count.
         plays[pair] = max(plays.get(pair, 0), count)
         artist_names[key] = min(artist_names.get(key, name), name)
     write_csv(output / 'artists.csv', ['artist_id', 'name', 'normalized_name'],
@@ -254,7 +254,7 @@ def main():
                                          output / 'cf', **split_kwargs(args))}
     if a_rows:
         mapped_a = set(b_to_a.values())
-        # 연결된 아티스트 중 태그도 있는 경우만 콘텐츠 평가
+        # Content evaluation only for linked artists that also have tags
         eligible_a = {a for a in mapped_a if a_lookup[a]['content_eligible'] == '1'}
         external = {}
         linked_count = 0
@@ -265,7 +265,7 @@ def main():
             if aid in eligible_a:
                 pair = user, aid
                 external[pair] = max(external.get(pair, 0), count)
-        # B의 콘텐츠 데이터도 A와 같은 아티스트 순서를 사용
+        # B’s content data also uses the same artist order as A
         a_order = [r['artist_id'] for r in sorted(a_rows, key=lambda r: int(r['artist_index']))]
         write_csv(output / 'content_candidate_artists.csv',
                   ['artist_index', 'a_artist_id', 'recommendation_candidate'],
@@ -279,7 +279,7 @@ def main():
                           'sample_unlinked_rows': len(plays)-linked_count,
                           'sample_content_usable_rows': len(external),
                           'sample_content_excluded_rows': len(plays)-len(external)}
-        # 공통 아티스트 이력이 충분한 사용자가 있는지 확인
+        # Check that there are users with enough common-artist history
         external_histories = collections.Counter(u for u, _ in external)
         if any(n >= args.min_history for n in external_histories.values()):
             candidate_info['split'] = export_interactions(
@@ -289,7 +289,7 @@ def main():
             candidate_info['split'] = {'status': 'not_enough_common_history_for_any_user'}
         report['artist_linking'] = candidate_info
     write_json(output / 'report.json', report)
-    print('B 전처리 완료:', output.resolve(), flush=True)
+    print('B preprocessing finished:', output.resolve(), flush=True)
     print(json.dumps({'sample_users': len(selected), 'sample_clean_rows': len(plays),
                       'cf_eligible_users': report['cf']['eligible_users']}, indent=2))
 

@@ -47,7 +47,7 @@ The data files are not included in this repository. Download them from the links
 ## 3.1 Documents
 
 - [Report: Source Codes & Descriptions](docs/ML_Term_Project_Team2_Report.docx): preprocessing, CF, CBF, hybrid, evaluation, results, and limitations (English).
-- The notebooks and preprocessing scripts are annotated in Korean (code comments and printed messages). The report and this README are in English.
+- The notebooks and preprocessing scripts are annotated in English. The saved cell outputs, printed run messages, and some plot labels inside the notebooks are in Korean, as produced by the original runs.
 
 ## 4. How to Run
 
