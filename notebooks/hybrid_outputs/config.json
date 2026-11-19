@@ -1,0 +1,43 @@
+{
+  "cf": {
+    "k": 30,
+    "weight": "log"
+  },
+  "cbf": {
+    "tf_mode": "raw",
+    "weight_mode": "uniform"
+  },
+  "hybrid": {
+    "method": "weighted RRF",
+    "rrf_c": 60,
+    "pool": 50,
+    "w_cf": 0.9,
+    "w_grid": [
+      0.0,
+      0.1,
+      0.2,
+      0.3,
+      0.4,
+      0.5,
+      0.6,
+      0.7,
+      0.8,
+      0.9,
+      1.0
+    ],
+    "selection": "Dataset A validation NDCG@10 (tie: recall10, precision10, smaller w)"
+  },
+  "common_candidates": {
+    "A": 9444,
+    "B": 8161
+  },
+  "ran_B": true,
+  "ran_B_official": true,
+  "b_official": {
+    "basis": "CF notebook conditions (B full history, all candidates, full truth)",
+    "catalog_cf": 48981,
+    "users": 9997
+  },
+  "seed": 42,
+  "topk": 10
+}

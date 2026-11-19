@@ -1,0 +1,11 @@
+,A (Last.fm 2K),B (Last.fm 360K sample)
+users,1877.0,9997.0
+train_artists,12904.0,42655.0
+train_rows,55721.0,301797.0
+sparsity,0.9976994574252024,0.9992922574932133
+median_artists_per_user(train),30.0,30.0
+median_listeners_per_artist(train),1.0,1.0
+validation_rows,18540.0,93948.0
+validation_cold_item_rate,0.14320388349514562,0.07312555881977265
+test_rows,18540.0,93948.0
+test_cold_item_rate,0.1442826321467098,0.07350874952101162

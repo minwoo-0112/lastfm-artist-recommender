@@ -1,0 +1,15 @@
+[A · 공식 결과(우선 기준) · NDCG@10] Popularity 0.0783 / CF 0.2039 / CBF 0.1135
+[B · 공식 결과(우선 기준) · NDCG@10] Popularity 0.0394 / CF 0.1462 / CBF 0.0831
+[A · 공통 후보(보조 기준) 9,444개 · 사용자 1,877명 · NDCG@10] Popularity 0.0783 / CF 0.2039 / CBF 0.1106 / Hybrid 0.2095
+[A · Coverage] Popularity 0.3% / CF 7.6% / CBF 24.4% / Hybrid 8.4%
+[A · 하이브리드] w=0.9 (A-validation 확정). Hybrid−CF NDCG@10 +0.0056 (95% CI +0.0028~+0.0082), 재표집 Hybrid>CF 10/10회
+[A · 인기 편향] 상위100 비율 Popularity 100% / CF 74% / CBF 22% / Hybrid 71%
+[A · 보완성] 적중 중 둘 다 26.8%, CF만 54.0%, CBF만 19.2%; Jaccard 평균 0.105
+[A · 안정성] 10회 재표집에서 CF>CBF>Popularity 유지: True
+[B · 공통 후보(보조 기준) 8,161개 · 사용자 9,931명 · NDCG@10] Popularity 0.0456 / CF 0.1690 / CBF 0.0847 / Hybrid 0.1718
+[B · Coverage] Popularity 0.3% / CF 30.3% / CBF 43.7% / Hybrid 31.7%
+[B · 하이브리드] w=0.9 (A-validation 확정). Hybrid−CF NDCG@10 +0.0028 (95% CI +0.0015~+0.0042), 재표집 Hybrid>CF 10/10회
+[B · 인기 편향] 상위100 비율 Popularity 100% / CF 52% / CBF 19% / Hybrid 50%
+[B · 보완성] 적중 중 둘 다 24.3%, CF만 57.4%, CBF만 18.3%; Jaccard 평균 0.105
+[B · 안정성] 10회 재표집에서 CF>CBF>Popularity 유지: True
+[재현성] 저장된 추천 CSV 재평가: CF 일치, CBF 일치, CF (B) 일치, Popularity (B) 일치

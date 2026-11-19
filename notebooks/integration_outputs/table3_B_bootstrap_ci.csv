@@ -1,0 +1,19 @@
+비교,지표,평균 차이,CI 하한,CI 상한,유의(0 미포함)
+CF − Popularity,precision10,0.076931,0.074766,0.079026,True
+CF − Popularity,recall10,0.122764,0.119121,0.12622,True
+CF − Popularity,ndcg10,0.123313,0.119649,0.126776,True
+CBF − Popularity,precision10,0.025073,0.023129,0.026957,True
+CBF − Popularity,recall10,0.044574,0.041342,0.047748,True
+CBF − Popularity,ndcg10,0.039109,0.035921,0.042176,True
+CF − CBF,precision10,0.051858,0.049864,0.053831,True
+CF − CBF,recall10,0.07819,0.074883,0.081533,True
+CF − CBF,ndcg10,0.084205,0.080826,0.087446,True
+Hybrid − CF,precision10,0.00287,0.002084,0.003675,True
+Hybrid − CF,recall10,0.005137,0.003872,0.00651,True
+Hybrid − CF,ndcg10,0.002801,0.001517,0.004165,True
+Hybrid − CBF,precision10,0.054728,0.052885,0.056611,True
+Hybrid − CBF,recall10,0.083327,0.080162,0.086547,True
+Hybrid − CBF,ndcg10,0.087005,0.083965,0.090083,True
+Hybrid − Popularity,precision10,0.079801,0.077575,0.081966,True
+Hybrid − Popularity,recall10,0.1279,0.124066,0.131492,True
+Hybrid − Popularity,ndcg10,0.126114,0.122219,0.129662,True

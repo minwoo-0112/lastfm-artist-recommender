@@ -1,0 +1,6 @@
+{
+  "tf_mode": "raw",
+  "weight_mode": "uniform",
+  "selection": "Dataset A validation NDCG@10",
+  "seed": 42
+}

@@ -1,0 +1,11 @@
+case,user_id,rank,artist,score,heldout_hit,neighbors_listened,top_neighbors
+success,797,1,Lady Gaga,51.825,True,24,"user 703 (sim 0.40, shared 6); user 1742 (sim 0.33, shared 7); user 1023 (sim 0.35, shared 5)"
+success,797,2,Rihanna,49.165,False,24,"user 399 (sim 0.34, shared 6); user 703 (sim 0.40, shared 6); user 1521 (sim 0.33, shared 6)"
+success,797,3,Miley Cyrus,39.001,False,20,"user 1851 (sim 0.39, shared 6); user 1145 (sim 0.40, shared 8); user 1072 (sim 0.33, shared 5)"
+success,797,4,Taylor Swift,36.102,True,16,"user 1145 (sim 0.40, shared 8); user 425 (sim 0.37, shared 4); user 1851 (sim 0.39, shared 6)"
+success,797,5,Beyoncé,33.138,False,20,"user 1071 (sim 0.33, shared 6); user 1742 (sim 0.33, shared 7); user 1072 (sim 0.33, shared 5)"
+failure,2100,1,Iron Maiden,4.387,False,10,"user 1324 (sim 0.13, shared 5); user 208 (sim 0.14, shared 5); user 1536 (sim 0.05, shared 2)"
+failure,2100,2,Mayhem,4.27,False,5,"user 586 (sim 0.42, shared 12); user 208 (sim 0.14, shared 5); user 548 (sim 0.14, shared 6)"
+failure,2100,3,Megadeth,4.145,False,9,"user 491 (sim 0.13, shared 5); user 548 (sim 0.14, shared 6); user 1986 (sim 0.05, shared 2)"
+failure,2100,4,Black Sabbath,3.905,False,8,"user 586 (sim 0.42, shared 12); user 491 (sim 0.13, shared 5); user 208 (sim 0.14, shared 5)"
+failure,2100,5,Judas Priest,3.859,False,8,"user 491 (sim 0.13, shared 5); user 548 (sim 0.14, shared 6); user 208 (sim 0.14, shared 5)"

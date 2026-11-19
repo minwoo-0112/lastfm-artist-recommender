@@ -1,0 +1,19 @@
+{
+  "method": "user-based CF (cosine)",
+  "k": 30,
+  "weight": "log",
+  "selection": "Dataset A validation NDCG@10",
+  "k_grid": [
+    5,
+    10,
+    20,
+    30,
+    50,
+    75,
+    100,
+    150,
+    200,
+    300
+  ],
+  "seed": 42
+}
