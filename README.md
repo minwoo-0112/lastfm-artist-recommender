@@ -44,6 +44,11 @@ The data files are not included in this repository. Download them from the links
 └─ docs/                               Reports
 ```
 
+## 3.1 Documents
+
+- [Report: Source Codes & Descriptions](docs/ML_Term_Project_Team2_Report.docx): preprocessing, CF, CBF, hybrid, evaluation, results, and limitations (English).
+- The notebooks and preprocessing scripts are annotated in Korean (code comments and printed messages). The report and this README are in English.
+
 ## 4. How to Run
 
 Run the steps in this order: preprocessing, CF, CBF, hybrid (03), unified evaluation (04).
